@@ -5,6 +5,7 @@ public class Main {
     private static final Scanner input = new Scanner(System.in);
     private static final ArrayList<Aluno> alunos = new ArrayList<>();
     private static final ArrayList<Professor> professores = new ArrayList<>();
+    private static final ArrayList<Curso> cursos = new ArrayList<>();
 
     public static void main(String[] args) {
         menu();
@@ -36,13 +37,13 @@ public class Main {
                     cadastrarProfessor();
                     break;
                 case 3:
-                    System.out.println("Cadastrando curso");
+                    cadastrarCurso();
                     break;
                 case 4:
-                    System.out.println("Matriculando aluno");
+                    matricularAluno();
                     break;
                 case 5:
-                    System.out.println("Listando cursos");
+                    listarCursos();
                     break;
                 case 6:
                     listarAlunos();
@@ -51,7 +52,7 @@ public class Main {
                     listarProfessores();
                     break;
                 case 8:
-                    System.out.println("Relatório dos cursos");
+                    relatorioCursos();
                     break;
                 case 0:
                     System.out.println("Logout efetuado.");
@@ -113,6 +114,109 @@ public class Main {
             }
         }   else {
             System.out.println("Nenhum professor cadastrado!");
+        }
+    }
+
+    public static void cadastrarCurso() {
+
+        if (professores.isEmpty()) {
+            System.out.println("Para continuar com o cadastro do curso, é necessário ter um professor registrado. Acesse a opção (2) e tente novamente.");
+            return;
+        }
+
+        System.out.println("Escolha o tipo de curso:");
+        System.out.println("1. Curso Presencial");
+        System.out.println("2. Curso Online");
+        System.out.println("3. Curso Intensivo");
+
+        int choice = input.nextInt();
+        Curso novoCurso = null;
+
+        switch (choice) {
+            case 1:
+                novoCurso = new CursoPresencial();
+                break;
+            case 2:
+                novoCurso = new CursoOnline();
+                break;
+            case 3:
+                novoCurso = new CursoIntensivo();
+                break;
+            default:
+                System.out.println("Opção inválida!");
+                return;
+        }
+
+        input.nextLine();
+        System.out.print("Qual a carga horária? ");
+        novoCurso.setCargaHoraria(input.nextDouble());
+        System.out.println("Escolha o professor responsável por este curso.");
+        listarProfessores();
+        System.out.println("---------------------------");
+
+        System.out.print("Digite o ID: ");
+        novoCurso.setProfessor(professores.get(input.nextInt() - 1));
+        System.out.println("Novo Curso cadastrado com sucesso!");
+        cursos.add(novoCurso);
+    }
+
+    public static void matricularAluno() {
+        if (cursos.isEmpty()) {
+            System.out.println("Nenhum curso cadastrado!");
+            return;
+        }
+        if (alunos.isEmpty()) {
+            System.out.println("Nenhum aluno cadastrado!");
+            return;
+        }
+
+        System.out.println("Selecione o curso pelo número:");
+        listarCursos();
+        int cursoIndex = input.nextInt() - 1;
+
+        if (cursoIndex < 0 || cursoIndex >= cursos.size()) {
+            System.out.println("Curso inválido!");
+            return;
+        }
+
+        System.out.println("Selecione o aluno pelo número:");
+        listarAlunos();
+        int alunoIndex = input.nextInt() - 1;
+
+        if (alunoIndex < 0 || alunoIndex >= alunos.size()) {
+            System.out.println("Aluno inválido!");
+            return;
+        }
+
+        Curso cursoSelecionado = cursos.get(cursoIndex);
+        Aluno alunoSelecionado = alunos.get(alunoIndex);
+
+        cursoSelecionado.matricularAluno(alunoSelecionado);
+        alunoSelecionado.setCursoMatriculado(cursoSelecionado);
+
+        System.out.println("Aluno matriculado com sucesso!");
+    }
+
+    public static void listarCursos() {
+        if(!cursos.isEmpty()) {
+            System.out.println("Lista de Cursos:");
+            System.out.println("---------------------------");
+
+            for(Curso c : cursos) {
+                System.out.println(c.toString());
+            }
+        }   else {
+            System.out.println("Nenhum curso cadastrado!");
+        }
+    }
+
+    public static void relatorioCursos() {
+        if (!cursos.isEmpty()) {
+            for (Curso c : cursos) {
+                System.out.println("{ tipo='" + c.getNome() + "', certificadoFinal=" + c.calculoCertificado() + "h }");
+            }
+        }   else {
+            System.out.println("Nenhum curso cadastrado.");
         }
     }
 }
