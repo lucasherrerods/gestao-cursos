@@ -1,7 +1,10 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     private static final Scanner input = new Scanner(System.in);
+    private static final ArrayList<Aluno> alunos = new ArrayList<>();
+    private static final ArrayList<Professor> professores = new ArrayList<>();
 
     public static void main(String[] args) {
         menu();
@@ -27,10 +30,10 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Cadastrando aluno");
+                    cadastrarAluno();
                     break;
                 case 2:
-                    System.out.println("Cadastrando professor");
+                    cadastrarProfessor();
                     break;
                 case 3:
                     System.out.println("Cadastrando curso");
@@ -42,10 +45,10 @@ public class Main {
                     System.out.println("Listando cursos");
                     break;
                 case 6:
-                    System.out.println("Listando alunos");
+                    listarAlunos();
                     break;
                 case 7:
-                    System.out.println("Listando professores");
+                    listarProfessores();
                     break;
                 case 8:
                     System.out.println("Relatório dos cursos");
@@ -58,6 +61,58 @@ public class Main {
                     System.out.println("Opção inválida! Tente novamente.");
                     break;
             }
+        }
+    }
+
+    public static void cadastrarAluno() {
+        Aluno novoAluno = new Aluno();
+
+        input.nextLine();
+        System.out.print("Digite o nome: ");
+        novoAluno.setNome(input.nextLine());
+        System.out.print("Digite o e-mail: ");
+        novoAluno.setEmail(input.nextLine());
+        System.out.println("Novo Aluno cadastrado com sucesso!");
+        alunos.add(novoAluno);
+    }
+
+    public static void listarAlunos() {
+        if (!alunos.isEmpty()) {
+            System.out.println("Lista de alunos:");
+            System.out.println("---------------------------");
+
+            for (Aluno a : alunos) {
+                System.out.println(a.toString());
+            }
+        }   else {
+            System.out.println("Nenhum aluno cadastrado!");
+        }
+    }
+
+    public static void cadastrarProfessor() {
+        Professor novoProfessor = new Professor();
+
+        input.nextLine();
+        System.out.print("Digite o nome: ");
+        novoProfessor.setNome(input.nextLine());
+        System.out.print("Digite o e-mail: ");
+        novoProfessor.setEmail(input.nextLine());
+        System.out.print("Qual a especialidade? ");
+        novoProfessor.setEspecialidade(input.nextLine());
+        System.out.println("Novo Professor cadastrado com sucesso!");
+        professores.add(novoProfessor);
+    }
+
+    public static void listarProfessores() {
+        if (!professores.isEmpty()) {
+            System.out.println("Lista de professores:");
+            System.out.println("---------------------------");
+
+            for(Professor p : professores) {
+                System.out.println(p.toString());
+            }
+        }   else {
+            System.out.println("Nenhum professor cadastrado!");
         }
     }
 }
