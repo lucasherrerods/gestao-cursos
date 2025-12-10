@@ -1,7 +1,7 @@
 public class Aluno extends Pessoa {
     private static int count = 1;
     private int matricula;
-    private String cursoMatriculado;
+    private Curso cursoMatriculado;
 
     public Aluno() {
         this.matricula = count;
@@ -21,11 +21,11 @@ public class Aluno extends Pessoa {
         return this.matricula;
     }
 
-    public String getCursoMatriculado() {
+    public Curso getCursoMatriculado() {
         return this.cursoMatriculado;
     }
 
-    public void setCursoMatriculado(String cursoMatriculado) {
+    public void setCursoMatriculado(Curso cursoMatriculado) {
         this.cursoMatriculado = cursoMatriculado;
     }
 }
